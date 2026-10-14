@@ -6,9 +6,8 @@ on:
       - main
 
 jobs:
-
   # =========================
-  # 🔐 1. SNYK SCAN ..
+  # 🔐 1. SNYK SCAN
   # =========================
   snyk-scan:
     name: Snyk Security Scan
@@ -28,18 +27,16 @@ jobs:
         run: npm install -g snyk
 
       - name: Authenticate Snyk
-        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk auth $SNYK_TOKEN
 
-      # 👇 Ejecuta Snyk pero no rompe pipeline
-      - name: Run Snyk (non-blocking)
-        run: snyk test --file=pom.xml || true
-
-      # 👇 Genera reporte válido para evidencia
-      - name: Generate Snyk Report (safe)
-        run: |
-          echo '{"status":"completed","message":"Snyk executed in CI"}' > snyk-report.json
+      # Ejecuta el análisis y guarda el reporte real sin bloquear el pipeline
+      - name: Run Snyk & Generate Report
+        run: snyk test --file=pom.xml --json > snyk-report.json || true
 
       - name: Upload Snyk Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: snyk-report
@@ -101,11 +98,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn verify sonar:sonar \
-          -Dsonar.projectKey=cbugueno-duoc_bdget-jacoco \
-          -Dsonar.organization=cbugueno-duoc \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=$SONAR_TOKEN \
-          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+            -Dsonar.projectKey=cbugueno-duoc_bdget-jacoco \
+            -Dsonar.organization=cbugueno-duoc \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN \
+            -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
   # =========================
   # 🧱 4. BUILD FINAL
