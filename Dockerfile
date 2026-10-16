@@ -3,7 +3,7 @@ FROM eclipse-temurin:22-jdk AS buildstage
 RUN apt-get update && apt-get install -y maven
 
 WORKDIR /app
-
+#TEST
 COPY pom.xml .
 COPY src /app/src
 COPY Wallet_N72BZHZWYZGTE7OH /app/wallet
