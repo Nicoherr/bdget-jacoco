@@ -7,9 +7,6 @@ on:
 
 jobs:
 
-  # =========================
-  # 🔐 1. SNYK SCAN ..
-  # =========================
   snyk-scan:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
