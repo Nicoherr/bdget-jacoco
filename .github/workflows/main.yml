@@ -42,9 +42,6 @@ jobs:
           name: snyk-report
           path: snyk-report.json
 
-  # =========================
-  # 🧪 2. TEST + JACOCO
-  # =========================
   test:
     name: Run Tests with JaCoCo
     runs-on: ubuntu-latest
@@ -75,9 +72,6 @@ jobs:
           name: jacoco-report
           path: target/site/jacoco/
 
-  # =========================
-  # 📊 3. SONARCLOUD
-  # =========================
   sonar:
     name: SonarCloud Analysis
     runs-on: ubuntu-latest
@@ -107,10 +101,7 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token=$SONAR_TOKEN \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
-  
-  # =========================
-  # 🧱 4. BUILD FINAL
-  # =========================
+
   build:
     name: Build JAR
     runs-on: ubuntu-latest
