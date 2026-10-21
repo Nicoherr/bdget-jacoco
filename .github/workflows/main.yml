@@ -58,7 +58,7 @@ jobs:
           name: jacoco-report
           path: target/site/jacoco/
 
-  # 3. Análisis SAST con SonarCloud (Acción Oficial)
+  # 3. Análisis SAST con SonarCloud
   sonarcloud:
     name: SonarCloud Analysis
     runs-on: ubuntu-latest
@@ -68,6 +68,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Make mvnw executable
+        run: chmod +x mvnw
+
+      - name: Build project for analysis
+        run: ./mvnw test-compile
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v3.1.0
