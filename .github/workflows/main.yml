@@ -58,7 +58,7 @@ jobs:
           name: jacoco-report
           path: target/site/jacoco/
 
-  # 3. Análisis SAST con SonarCloud (Usando Maven Plugin)
+  # 3. Análisis SAST con SonarCloud
   sonarcloud:
     name: SonarCloud Analysis
     runs-on: ubuntu-latest
@@ -69,25 +69,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Make mvnw executable
-        run: chmod +x mvnw
-
-      - name: Run SonarCloud Scan via Maven
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v3.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar \
-            -Dsonar.projectKey=Nicoherr_bdget-jacoco \
-            -Dsonar.organization=PON_AQUI_LA_KEY_EXACTA \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.token=${SONAR_TOKEN}
+        with:
+          args: >
+            -Dsonar.projectKey=Nicoherr_bdget-jacoco
+            -Dsonar.organization=PON_AQUI_LA_KEY_EXACTA_DE_SONARCLOUD
+            -Dsonar.sources=src/main/java
+            -Dsonar.java.binaries=target/classes
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }}
 
   # 4. Despliegue SSH en AWS EC2
   deploy:
