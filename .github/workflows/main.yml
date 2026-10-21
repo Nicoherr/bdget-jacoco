@@ -27,11 +27,9 @@ jobs:
       - name: Authenticate Snyk
         run: snyk auth ${{ secrets.SNYK_TOKEN }}
 
-      # Ejecuta Snyk sin romper el pipeline
       - name: Run Snyk (non-blocking)
         run: snyk test --file=pom.xml || true
 
-      # Genera reporte para evidencia
       - name: Generate Snyk Report (safe)
         run: |
           echo '{"status":"completed","message":"Snyk executed in CI"}' > snyk-report.json
@@ -97,7 +95,7 @@ jobs:
           mvn clean verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=Nicoherr_bdget-jacoco \
-            -Dsonar.organization=PON_AQUI_LA_KEY_EXACTA \
+            -Dsonar.organization=Nicoherr \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token=$SONAR_TOKEN \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
