@@ -77,7 +77,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=Nicoherr_bdget-jacoco
-            -Dsonar.organization=TU_ORGANIZATION_KEY_AQUI
+            -Dsonar.organization=PON_AQUI_LA_KEY_EXACTA_DE_SONARCLOUD
             -Dsonar.sources=src/main/java
             -Dsonar.java.binaries=target/classes
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
