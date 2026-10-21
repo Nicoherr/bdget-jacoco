@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  # 1. Escaneo SCA con Snyk
+  # 1. Escaneo SCA con Snyk (Usando la Acción Oficial de Maven)
   snyk-scan:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
@@ -17,24 +17,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Snyk CLI
-        run: npm install -g snyk
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-      - name: Authenticate Snyk
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven@master
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk auth $SNYK_TOKEN
-
-      - name: Run Snyk Test
-        continue-on-error: true
-        run: snyk test --severity-threshold=high --json > snyk-report.json
-
-      - name: Upload Snyk Report
-        if: always()
-        uses: actions/upload-artifact@v4
         with:
-          name: snyk-report
-          path: snyk-report.json
+          args: --severity-threshold=high
 
   # 2. Pruebas Unitarias y JaCoCo
   test:
