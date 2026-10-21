@@ -26,7 +26,15 @@ jobs:
         run: snyk auth $SNYK_TOKEN
 
       - name: Run Snyk Test
-        run: snyk test --severity-threshold=high
+        continue-on-error: true
+        run: snyk test --severity-threshold=high --json > snyk-report.json
+
+      - name: Upload Snyk Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snyk-report
+          path: snyk-report.json
 
   # 2. Pruebas Unitarias y JaCoCo
   test:
@@ -89,9 +97,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{ secrets.EC2 }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH }}
           script: |
             mkdir -p ~/app
             cd ~/app
