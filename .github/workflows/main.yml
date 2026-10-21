@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  # 1. Escaneo SCA con Snyk
+  # 1. Escaneo SCA con Snyk (Acción Oficial)
   snyk-scan:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=Nicoherr_bdget-jacoco
-            -Dsonar.organization=Nicoherr
+            -Dsonar.organization=TU_ORGANIZATION_KEY_AQUI
             -Dsonar.sources=src/main/java
             -Dsonar.java.binaries=target/classes
             -Dsonar.token=${{ secrets.SONAR_TOKEN }}
