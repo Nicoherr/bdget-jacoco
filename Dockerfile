@@ -1,27 +1,21 @@
-FROM eclipse-temurin:22-jdk AS buildstage 
- 
-RUN apt-get update && apt-get install -y maven
-
+# Etapa 1: Compilación
+FROM eclipse-temurin:17-jdk-alpine AS builder
 WORKDIR /app
+COPY . .
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
 
-COPY pom.xml .
-COPY src /app/src
-COPY Wallet_N72BZHZWYZGTE7OH /app/wallet
+# Etapa 2: Ejecución
+FROM eclipse-temurin:17-jre-alpine AS runner
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
 
-ENV TNS_ADMIN=/app/wallet
-
-RUN mvn clean package
-
-FROM eclipse-temurin:22-jdk 
-
-COPY --from=buildstage /app/target/bdget-0.0.1-SNAPSHOT.jar /app/bdget.jar
-
-COPY Wallet_N72BZHZWYZGTE7OH /app/wallet
-
-ENV TNS_ADMIN=/app/wallet
 EXPOSE 8080
 
-ENTRYPOINT [ "java", "-jar","/app/bdget.jar" ]
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
 
