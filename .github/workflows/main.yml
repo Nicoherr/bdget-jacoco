@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  # 1. Escaneo SCA con Snyk (Usando la Acción Oficial de Maven)
+  # 1. Escaneo SCA con Snyk (Usando la Acción Oficial)
   snyk-scan:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
