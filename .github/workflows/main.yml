@@ -95,7 +95,7 @@ jobs:
           mvn clean verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=Nicoherr_bdget-jacoco \
-            -Dsonar.organization=Nicoherr \
+            -Dsonar.organization=nicoherr \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.token=$SONAR_TOKEN \
             -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
@@ -144,4 +144,3 @@ jobs:
             cd ~/app
             sudo docker compose down || true
             sudo docker compose up -d --build
-# trigger update with new token
