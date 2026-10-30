@@ -48,12 +48,16 @@ La suite de pruebas usa H2 en memoria para no depender de una base de datos exte
 `.github/workflows/main.yml` ejecuta en pull requests y en cambios a `main`:
 
 1. Pruebas Maven y control de cobertura JaCoCo.
-2. Construcción de la imagen Docker y escaneo Trivy de vulnerabilidades altas o críticas.
-3. Análisis estático CodeQL y revisión de nuevas dependencias en pull requests.
-4. Publicación del reporte de cobertura como artefacto asociado al SHA del commit.
-5. Despliegue por SSH a EC2 después de que las validaciones de seguridad y pruebas terminen correctamente.
+2. Escaneo Snyk de dependencias con bloqueo para vulnerabilidades altas o críticas.
+3. Análisis SonarCloud con el reporte JaCoCo y espera del Quality Gate.
+4. Construcción de la imagen Docker y escaneo Trivy de vulnerabilidades altas o críticas.
+5. Análisis estático CodeQL y revisión de nuevas dependencias en pull requests.
+6. Publicación del reporte de cobertura como artefacto asociado al SHA del commit.
+7. Despliegue por SSH a EC2 después de que las validaciones de seguridad y pruebas terminen correctamente.
 
-El despliegue requiere los secretos de GitHub `EC2`, `EC2_USER` y `EC2_SSH`. En la instancia, instala Docker Compose v2 y crea `~/bdget-jacoco/.env` con credenciales seguras para `MYSQL_ROOT_PASSWORD`, `MYSQL_DATABASE`, `MYSQL_USER` y `MYSQL_PASSWORD`. Configura también el grupo de seguridad de EC2 para permitir el puerto indicado por `APP_PORT` (8080 por defecto). El pipeline no copia archivos `.env` ni wallets al servidor.
+En GitHub, abre **Settings → Secrets and variables → Actions**. Guarda los tokens `SNYK_TOKEN` y `SONAR_TOKEN` en **Secrets**; crea `SONAR_ORGANIZATION` y `SONAR_PROJECT_KEY` en **Variables** usando los identificadores de tu proyecto en SonarCloud. No guardes los tokens en el código ni los compartas.
+
+El despliegue requiere además los secretos `EC2`, `EC2_USER` y `EC2_SSH`. En la instancia, instala Docker Compose v2 y crea `~/bdget-jacoco/.env` con credenciales seguras para `MYSQL_ROOT_PASSWORD`, `MYSQL_DATABASE`, `MYSQL_USER` y `MYSQL_PASSWORD`. Configura también el grupo de seguridad de EC2 para permitir el puerto indicado por `APP_PORT` (8080 por defecto). El pipeline no copia archivos `.env` ni wallets al servidor.
 
 ## Criterios de la rúbrica
 
