@@ -2,7 +2,7 @@ name: CI/CD
 
 on:
   push:
-    branches: [main, ci-cd-rubric]
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -168,7 +168,7 @@ jobs:
 
   deploy:
     name: Deploy to AWS EC2
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [verify, snyk, sonarcloud, codeql]
     runs-on: ubuntu-latest
     steps:
