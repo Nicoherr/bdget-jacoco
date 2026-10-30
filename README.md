@@ -67,6 +67,15 @@ El despliegue requiere además los secretos `EC2`, `EC2_USER` y `EC2_SSH`. En la
 - **IE4 — Despliegue y trazabilidad:** despliegue desde `main` tras validaciones y etiqueta OCI de la imagen con el SHA del commit.
 - **IE5 — Orquestación:** Docker Compose coordina aplicación, proxy y base de datos con persistencia, salud y orden de inicio.
 
+## Declaración del uso de Inteligencia Artificial
+
+En conformidad con las políticas académicas de Duoc UC:
+
+- **Herramientas utilizadas:** Gemini y Claude (Anthropic).
+- **Gemini:** asistencia técnica para depurar errores de permisos SSH, resolver incompatibilidades de Docker Buildx en Amazon Linux 2023 y revisar la sintaxis de `.github/workflows/main.yml`.
+- **Claude:** análisis del repositorio y del pipeline CI/CD, identificación de tareas pendientes (SonarCloud, despliegue, Dependabot) y guía para configurar los secretos de GitHub Actions y el despliegue en AWS EC2.
+- **Validación:** el código, la infraestructura en AWS y las pruebas fueron revisados y validados directamente por el equipo de estudiantes.
+
 ## Equipo
 
 - Nicolás Herrera
