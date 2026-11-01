@@ -1,0 +1,16 @@
+.git
+.github
+.idea
+.vscode
+target
+**/target
+.env
+.env.*
+Wallet_*
+**/Wallet_*
+*.pem
+*.p12
+*.sso
+*.jks
+.DS_Store
+**/.DS_Store

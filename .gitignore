@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Local deployment configuration and Oracle wallet material
+/.env
+/.env.*
+!/.env.example
+/Wallet_*/
